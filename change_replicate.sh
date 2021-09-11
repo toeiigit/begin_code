@@ -1,8 +1,8 @@
 #!/bin/bash
 
-MONGODB_01="mymodockersitmsdb01.cloud"
-MONGODB_02="mymodockersitmsdb02.cloud"
-MONGODB_03="mymodockersitmsdb03.cloud"
+MONGODB_01=${1:-"$(hostname | cut -b -15)db01.cloud"}
+MONGODB_02=${2:-"$(hostname | cut -b -15)db02.cloud"}
+MONGODB_03=${3:-"$(hostname | cut -b -15)db03.cloud"}
 
 PORT_LIST=$(find . -name default.yml | xargs grep "mongodb://" | grep -v "#" | awk -F: {'print$6'} | awk -F/ {'print$1'} | sed -e '/^[[:space:]]*$/d' | sort -u)
 
