@@ -8,6 +8,7 @@ PORT_LIST=$(find . -name default.yml | xargs grep "mongodb://" | grep -v "#" | a
 
 for PORT in ${PORT_LIST}
 do
-    CONFIG_DBFILE=$(find . -name default.yml | xargs grep "mongodb://" | grep ${PORT} | awk {'print$1'} | sort -u)
-    sed -i 's/gsbmymopbsitmsdb02:${PORT}/${1}:${PORT},${2}:${PORT},${3}:${PORT} ${CONFIG_DB}
+    OLD_HOST_REP=$(find . -name default.yml | xargs grep "mongodb://" | grep -v '#' | grep ${PORT} | awk -F@ {'print$2'} | awk -F: {'print$1'})
+    CONFIG_DBFILE=$(find . -name default.yml | xargs grep "mongodb://" | grep -v '#' | grep ${PORT} | awk {'print$1'} | sort -u)
+    sed -i 's/${OLD_HOST_REP}:${PORT}/${MONGODB_01}:${PORT},${MONGODB_02}:${PORT},${MONGODB_03}:${PORT}/g' ${CONFIG_DB}
 done
